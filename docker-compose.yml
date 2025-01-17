@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: myapp_hoa
+
+  web:
+    build: .
+    command: bundle exec rails s -b '0.0.0.0'
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/myapp_hoa
+      SECRET_KEY_BASE: 140955bce8c4214231b2244e4f4bd2201ebaa161aca8ff2ac2d0eba809ff6b2497126fd83ea538981ea8a4466b3e4d3479ced930f034e41c80427f04e7657a43
+
+
+volumes:
+  postgres_data:

@@ -68,5 +68,7 @@ group :test do
 end
 
 gem 'fast_jsonapi' #Optimized serialization of compound
+gem 'devise'
 gem 'will_paginate'
 gem 'figaro'
+gem "aws-sdk-s3" #AWS SDK

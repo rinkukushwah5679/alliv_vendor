@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  # resources :users, :only => [:show] do
-  #   # get :profile_details, on: :collection
-  # end
+  resources :users, :only => [:show, :update] do
+    # get :profile_details, on: :collection
+  end
 end
