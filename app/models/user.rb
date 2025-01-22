@@ -7,7 +7,6 @@ class User < ApplicationRecord
   has_one_attached :profile_pic
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
-  after_create :set_stripe_customer, :create_stripe_account_id
   validates :first_name, :last_name, presence: true
   after_save :check_profile_pic_upload, if: -> { profile_pic.attached? && saved_change_to_profile_pic? }
 
