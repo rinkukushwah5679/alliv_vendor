@@ -16,10 +16,6 @@ jobs:
     # Checkout code from GitHub
     - name: Checkout Code
       uses: actions/checkout@v3
-      # If you need to clone an external repository, you can do it like this.
-      # with:
-      #   repository: 'other-user/repo-name'
-      #   token: ${{ secrets.GITHUB_TOKEN }}
 
     # Setup Ruby environment
     - name: Set up Ruby
@@ -27,24 +23,11 @@ jobs:
       with:
         ruby-version: 3.3.6
 
-    # Install PostgreSQL (Manual Approach)
-    - name: Install PostgreSQL
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y postgresql postgresql-contrib
-        sudo service postgresql start
-        sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
-
     # Install dependencies
     - name: Install Dependencies
       run: |
         gem install bundler
         bundle install
-
-    # Set up database
-    - name: Set up Database
-      run: |
-        bin/rails db:create RAILS_ENV=test
 
     # Run tests
     - name: Run Tests
