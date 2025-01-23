@@ -15,7 +15,7 @@ jobs:
     steps:
     # Checkout code from GitHub
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       # If you need to clone an external repository, you can do it like this.
       # with:
       #   repository: 'other-user/repo-name'
