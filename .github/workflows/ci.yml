@@ -44,7 +44,7 @@ jobs:
     # Set up database
     - name: Set up Database
       run: |
-        bin/rails db:create db:schema:load RAILS_ENV=test
+        bin/rails db:create RAILS_ENV=test
 
     # Run tests
     - name: Run Tests
