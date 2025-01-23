@@ -4,6 +4,7 @@ class User < ApplicationRecord
   # default_scope { order(created_at: :desc) }
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+  # attr_accessor :current_password
   has_one_attached :profile_pic
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
