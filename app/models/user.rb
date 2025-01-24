@@ -16,6 +16,7 @@ class User < ApplicationRecord
   # enum mailing_preference: { PrimaryAddress: "PrimaryAddress", AlternateAddress: "AlternateAddress" }
 
   has_many :addresses, as: :addressable, dependent: :destroy
+  has_one :emergency_contact, dependent: :destroy
 
   def full_name
     "#{first_name} #{last_name}".strip

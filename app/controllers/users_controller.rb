@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-	before_action :set_user, only: [:show, :update, :update_password]
+	before_action :set_user#, only: [:show, :update, :update_password, :create_addresse]
 
 	def show
 		render json: UserSerializer.new(@user, meta: {message: "User details"}).serializable_hash, status: :ok
@@ -7,6 +7,7 @@ class UsersController < ApplicationController
 
 	def update
 		if @user.update(user_params)
+			# emergency_contact = EmergencyContact.find_or_initialize_by(user_id: user.id)
 			render json: UserSerializer.new(@user, meta: { message: 'User updated successfully.' }), status: :ok
 	  else
 	    render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
@@ -30,7 +31,7 @@ class UsersController < ApplicationController
 
 	private
 	def user_params
-    params.require(:user).permit(:email, :first_name, :last_name, :is_active, :profile_pic)
+    params.require(:user).permit(:email, :first_name, :last_name, :unit_nickname, :gender, :dob, :is_active, :profile_pic)
   end
 
   def password_params

@@ -13,5 +13,11 @@ Rails.application.routes.draw do
   # root "posts#index"
   resources :users, :only => [:show, :update] do
     put :update_password, on: :member
+    get :address_details, on: :member
+    put :create_address, on: :member
+
+    # member do
+      resources :addresses
+    # end
   end
 end
