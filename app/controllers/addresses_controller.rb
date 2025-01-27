@@ -14,7 +14,7 @@ class AddressesController < ApplicationController
 		return render json: {errors: {message: ["Address type must be Primary or Alternate"]}}, status: :unprocessable_entity unless Address.address_types.keys.include?(address_params[:address_type])
 		@address = @user.addresses.new(address_params)
 		if @address.save
-			render json: AddressSerializer.new(@address, meta: { message: 'Address created successfully' }), status: :ok
+			render json: CreatedAddressSerializer.new(@address, meta: { message: 'Address created successfully' }), status: :ok
 		else
 			render json: { errors: @address.errors.full_messages }, status: :unprocessable_entity
 		end
