@@ -3,7 +3,7 @@ class AddressesController < ApplicationController
 	before_action :set_address, only: [:show, :update]
 
 	def index
-		render json: AddressSerializer.new(@user.addresses), status: :ok
+		render json: AddressSerializer.new(@user.addresses.select("addresses.*, c.email AS c_email, c.id AS c_id, up.email AS up_email, up.id AS up_id").joins("INNER JOIN users as c on c.id = addresses.created_by").joins("INNER JOIN users as up on up.id = addresses.updated_by")), status: :ok
 	end
 
 	def show
@@ -36,7 +36,7 @@ class AddressesController < ApplicationController
 	end
 
 	def set_address
-		@address = @user.addresses.find_by(id: params[:id])
+		@address = @user.addresses.select('addresses.*, c.email AS c_email, c.id AS c_id, up.email AS up_email, up.id AS up_id').joins('INNER JOIN users as c on c.id = addresses.created_by').joins('INNER JOIN users as up on up.id = addresses.updated_by').find_by_id(params[:id])
 		return render json: {errors: {message: ["Address not found"]}}, :status => :not_found unless @address.present?
 	end
 
