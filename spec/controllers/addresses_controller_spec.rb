@@ -62,7 +62,7 @@ RSpec.describe AddressesController, type: :controller do
       it "updates the address" do
         put :update, params: { user_id: @user.id, id: @address.id, address: valid_attributes }
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)["meta"]["message"]).to eq("Address created successfully")
+        expect(JSON.parse(response.body)["meta"]["message"]).to eq("Address updated successfully")
         expect(@address.reload.address_line1).to eq("123 Street")
       end
     end
@@ -88,6 +88,16 @@ RSpec.describe AddressesController, type: :controller do
         post :update, params: { user_id: @user.id, id: @address.id, address: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
         expect(JSON.parse(response.body)['errors'].join("")).to include("Address line1 can't be blank")
+      end
+    end
+  end
+
+  describe "DELETE #destroy" do
+    context "when address exists" do
+      it "deletes the address and returns success message" do
+        delete :destroy, params: { user_id: @user.id, id: @address.id }
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)["message"]).to eq("Address successfully destroyed.")
       end
     end
   end

@@ -1,6 +1,6 @@
 class AddressesController < ApplicationController
 	before_action :set_user
-	before_action :set_address, only: [:show, :update]
+	before_action :set_address, only: [:show, :update, :destroy]
 
 	def index
 		render json: AddressSerializer.new(@user.addresses.select("addresses.*, c.email AS c_email, c.id AS c_id, up.email AS up_email, up.id AS up_id").joins("INNER JOIN users as c on c.id = addresses.created_by").joins("INNER JOIN users as up on up.id = addresses.updated_by")), status: :ok
@@ -23,10 +23,15 @@ class AddressesController < ApplicationController
 	def update
 		return render json: {errors: {message: ["Address type must be Primary or Alternate"]}}, status: :unprocessable_entity unless Address.address_types.keys.include?(address_params[:address_type])
 		if @address.update(address_params)
-			render json: AddressSerializer.new(@address, meta: { message: 'Address created successfully' }), status: :ok
+			render json: CreatedAddressSerializer.new(@address, meta: { message: 'Address updated successfully' }), status: :ok
 		else
 			render json: { errors: @address.errors.full_messages }, status: :unprocessable_entity
 		end
+	end
+
+	def destroy
+		@address.destroy
+    render json: {message:"Address successfully destroyed."}, status: :ok
 	end
 
 	private
