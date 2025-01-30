@@ -7,7 +7,7 @@ class UsersController < ApplicationController
 
 	def update
 		if @user.update(user_params)
-			# emergency_contact = EmergencyContact.find_or_initialize_by(user_id: user.id)
+			update_emergency_contact if params.dig(:user, :emergency_contact).present?
 			render json: UserSerializer.new(@user, meta: { message: 'User updated successfully.' }), status: :ok
 	  else
 	    render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
@@ -41,5 +41,12 @@ class UsersController < ApplicationController
 	def set_user
 		@user = User.find_by(id: params[:id])
 		return render json: {errors: {message: ["User not found"]}}, :status => :not_found unless @user.present?
+	end
+
+	def update_emergency_contact
+	  emergency_con = EmergencyContact.find_or_initialize_by(user_id: @user.id)
+	  emergency_con.created_by = @user.id if emergency_con.new_record?
+	  emergency_con.updated_by = @user.id
+	  emergency_con.update(params.require(:user).require(:emergency_contact).permit(:phone_number, :name, :email, :relationship))
 	end
 end
