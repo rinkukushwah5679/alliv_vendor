@@ -27,7 +27,7 @@ RSpec.describe UsersController, type: :controller do
   describe 'PUT #update' do
     let!(:user) { FactoryBot.create(:user) }
     context 'Updating user details' do
-      let(:valid_params) { { user: { email: user.email, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, profile_pic: profile_pic }, id: user.id } }
+      let(:valid_params) { { user: { email: user.email, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, profile_pic: profile_pic, emergency_contact: {phone_number: Faker::PhoneNumber.cell_phone_in_e164, name: Faker::Name.name, email: Faker::Internet.email, relationship: Faker::Relationship.familial} }, id: user.id } }
 
       it 'updates the user' do
         put :update, params: valid_params
@@ -91,6 +91,33 @@ RSpec.describe UsersController, type: :controller do
         expect(response).to have_http_status(:ok)
         json_response = JSON.parse(response.body)
         expect(json_response['meta']['message']).to eq("Password updated successfully.")
+      end
+    end
+  end
+
+  describe 'Get #business_details' do
+    let!(:business_detail) { FactoryBot.create(:business_detail, user_id: user.id) }
+    context 'when the business exists' do
+      it 'returns the business details' do
+        get :business_details, params: { id: user.id }
+        expect(response).to have_http_status(:ok)
+        json_response = JSON.parse(response.body)
+        expect(json_response['data']['id']).to eq(business_detail.id.to_s)
+        expect(json_response['meta']['message']).to eq('Business details')
+      end
+    end
+  end
+
+  describe 'PUT #update_business_details' do
+    let(:business_logo) { Rack::Test::UploadedFile.new(Rails.root.join('spec/images/business_logo.jpg'), 'image/jpeg') }
+    context 'Updating business details' do
+      let(:valid_business_params) { { business_detail: { busi_name: Faker::Company.name, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, office_address: "MyString", phone: Faker::PhoneNumber.cell_phone_in_e164, email: Faker::Internet.email, fein_or_tin_number: "MyString", business_logo: business_logo }, id: user.id } }
+
+      it 'Updates the business details' do
+        put :update_business_details, params: valid_business_params
+        expect(response).to have_http_status(:ok)
+        json_response = JSON.parse(response.body)
+        expect(json_response["meta"]["message"]).to eq("Business updated successfully.")
       end
     end
   end
