@@ -29,6 +29,7 @@ class UsersController < ApplicationController
 	  end
 	end
 
+	#Start business module for vendor
 	def business_details
 		render json: BusinessDetailsSerializer.new(@user.business_detail, meta: {message: "Business details"}).serializable_hash, status: :ok
 	end
@@ -43,6 +44,7 @@ class UsersController < ApplicationController
 			render json: { errors: business.errors.full_messages }, status: :unprocessable_entity
 	  end
 	end
+	#End business module for vendor
 
 	private
 	def user_params

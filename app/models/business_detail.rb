@@ -1,5 +1,5 @@
 class BusinessDetail < ApplicationRecord
-	validates :busi_name, presence: true
+	# validates :busi_name, presence: true
 	belongs_to :user
 	has_one_attached :business_logo
 	after_save :check_business_logo_upload, if: -> { business_logo.attached? && saved_change_to_business_logo? }
