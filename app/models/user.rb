@@ -17,6 +17,7 @@ class User < ApplicationRecord
 
   has_many :addresses, as: :addressable, dependent: :destroy
   has_one :emergency_contact, dependent: :destroy
+  has_one :business_detail, dependent: :destroy
 
   def full_name
     "#{first_name} #{last_name}".strip

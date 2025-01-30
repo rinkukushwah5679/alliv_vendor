@@ -29,6 +29,21 @@ class UsersController < ApplicationController
 	  end
 	end
 
+	def business_details
+		render json: BusinessDetailsSerializer.new(@user.business_detail, meta: {message: "Business details"}).serializable_hash, status: :ok
+	end
+
+	def update_business_details
+		business = BusinessDetail.find_or_initialize_by(user_id: @user.id)
+	  business.created_by = @user.id if business.new_record?
+	  business.updated_by = @user.id
+	  if business.update(business_params)
+			render json: BusinessDetailsSerializer.new(business, meta: {message: "Business updated successfully."}).serializable_hash, status: :ok
+	  else
+			render json: { errors: business.errors.full_messages }, status: :unprocessable_entity
+	  end
+	end
+
 	private
 	def user_params
     params.require(:user).permit(:email, :first_name, :last_name, :unit_nickname, :gender, :dob, :is_active, :profile_pic)
@@ -36,6 +51,10 @@ class UsersController < ApplicationController
 
   def password_params
     params.require(:user).permit(:current_password, :password, :confirm_password)
+  end
+
+  def business_params
+		params.require(:business_detail).permit(:busi_name, :first_name, :last_name, :office_address, :phone, :email, :fein_or_tin_number, :business_logo)
   end
 
 	def set_user

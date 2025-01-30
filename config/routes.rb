@@ -19,5 +19,7 @@ Rails.application.routes.draw do
     # member do
       resources :addresses
     # end
+    get :business_details, on: :member
+    put :update_business_details, on: :member
   end
 end
