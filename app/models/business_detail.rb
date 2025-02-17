@@ -13,7 +13,7 @@ class BusinessDetail < ApplicationRecord
   end
 
   def generate_public_url(attachment)
-    "https://" + "#{ENV['AWS_BUCKET']}" + ".s3." + "#{ENV['AWS_RESION']}" + ".amazonaws.com/" + "#{attachment.blob.key}"
+    "https://" + "#{ENV['AWS_BUCKET']}" + ".s3." + "#{ENV['AWS_REGION']}" + ".amazonaws.com/" + "#{attachment.blob.key}"
   end
 
   def saved_change_to_business_logo?
