@@ -21,7 +21,7 @@ RUN bundle install
 COPY . .
 
 
-# Expose port 3000 to the Docker host, so we can access it
+# Expose port 3001 to the Docker host, so we can access it
 EXPOSE 3001
 
 # Start the main process
