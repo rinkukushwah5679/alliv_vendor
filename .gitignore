@@ -34,3 +34,5 @@
 /config/master.key
 
 config/application.yml
+coverage/
+.kamal/secrets

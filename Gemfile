@@ -72,3 +72,4 @@ gem 'devise'
 gem 'will_paginate'
 gem 'figaro'
 gem "aws-sdk-s3" #AWS SDK
+gem "kamal", "~> 2.5"
